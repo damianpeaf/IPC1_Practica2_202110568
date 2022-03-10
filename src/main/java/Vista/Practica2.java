@@ -17,6 +17,7 @@ import java.util.logging.Logger;
 import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
@@ -32,8 +33,8 @@ public class Practica2 extends javax.swing.JFrame {
     private File archivo = null;
     private static String titulo = null;
 
-    private static String datos = "";
-    private static int tipo = 0;
+    private String datos = "";
+    
     public static DatosGrafica datosGrafica = null;
 
     /**
@@ -41,6 +42,8 @@ public class Practica2 extends javax.swing.JFrame {
      */
     public Practica2() {
         initComponents();
+        FileNameExtensionFilter filtro = new FileNameExtensionFilter("*.CSV","csv");
+        exploradorArchivos.setFileFilter(filtro);
 
     }
 
@@ -314,7 +317,9 @@ public class Practica2 extends javax.swing.JFrame {
     }//GEN-LAST:event_btnBuscarActionPerformed
 
     private void btnCargarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCargarActionPerformed
+        //Resetear la informacion
         datos ="";
+        datosGrafica=null;
         
         if (archivo != null) {
             try {
@@ -328,7 +333,7 @@ public class Practica2 extends javax.swing.JFrame {
                 }
 
                 if (!datos.equals("")) {
-                    datosGrafica = new DatosGrafica(datos, tipo);
+                    datosGrafica = new DatosGrafica(datos, comboBoxTipo.getSelectedIndex());
                 }
 
             } catch (FileNotFoundException ex) {
@@ -362,11 +367,15 @@ public class Practica2 extends javax.swing.JFrame {
 
     private void btnEjecutarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEjecutarActionPerformed
         // TODO add your handling code here:
+        if (datosGrafica!=null) {
+            int [] opcionSimulacion = {comboBoxAlgoritmo.getSelectedIndex(), comboBoxTipo.getSelectedIndex(), comboBoxVelocidad.getSelectedIndex()};
+            
+            Simulacion frame = new Simulacion(datosGrafica,opcionSimulacion);
+            frame.setVisible(true);
+        }
     }//GEN-LAST:event_btnEjecutarActionPerformed
 
     private void comboBoxTipoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comboBoxTipoActionPerformed
-        // TODO add your handling code here:
-        tipo = comboBoxTipo.getSelectedIndex();
     }//GEN-LAST:event_comboBoxTipoActionPerformed
 
     /**

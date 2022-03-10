@@ -368,6 +368,8 @@ public class Practica2 extends javax.swing.JFrame {
 
     private void btnEjecutarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEjecutarActionPerformed
         // TODO add your handling code here:
+        btnCargar.doClick();
+        
         if (datosGrafica!=null) {
             
             Ordenamiento ord = new Ordenamiento(datosGrafica,comboBoxAlgoritmo.getSelectedIndex(), comboBoxTipo.getSelectedIndex(), comboBoxVelocidad.getSelectedIndex(),titulo);

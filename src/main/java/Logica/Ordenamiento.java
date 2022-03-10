@@ -11,6 +11,7 @@ import java.awt.Dimension;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
@@ -62,18 +63,33 @@ public class Ordenamiento implements Runnable {
                 if (algoritmo == 0) {
                     //Burbuja
                     ordenado = burbuja(tipo);
-
+                } else if (algoritmo == 1) {
+                    //seleccion
+                    ordenado = seleccion(tipo);
+                } else if (algoritmo == 2) {
+                    //insercion
+                    ordenado = insercion(tipo);
                 }
-
             }
 
             Simulacion.cronometro.detener();
             detener();
         }
 
+        JOptionPane.showMessageDialog(null, "Ordenamiento finalizado, generando reporte...");
+
     }
 
     private void detener() {
+        //TODO: ARREGLAR ESTO
+        JFreeChart graficoBarras = ChartFactory.createBarChart(tituloGrafica, datosGrafica.tituloBarras, datosGrafica.tituloNumeracion, DatosGrafica.crearDataSet(datosGrafica), PlotOrientation.VERTICAL, true, true, false);
+        ChartPanel panelGrafica = new ChartPanel(graficoBarras);
+        panelGrafica.setPreferredSize(new Dimension(panelContenedorGrafica.getWidth(), panelContenedorGrafica.getHeight()));
+
+        panelContenedorGrafica.setLayout(new BorderLayout());
+        panelContenedorGrafica.add(panelGrafica, BorderLayout.CENTER);
+        panelContenedorGrafica.validate();
+
         tOrdenamiento.interrupt();
     }
 
@@ -121,6 +137,71 @@ public class Ordenamiento implements Runnable {
 
             }
         }
+        return true;
+    }
+
+    private boolean seleccion(int tipo) {
+
+        for (int i = 0; i < datos.datosFilas.length - 1; i++) {
+            for (int j = i + 1; j < datos.datosFilas.length; j++) {
+
+                boolean clausula;
+
+                if (tipo == 0) {
+                    clausula = datos.datosFilas[i].getNota() > datos.datosFilas[j].getNota();
+                } else {
+                    clausula = datos.datosFilas[i].getNota() < datos.datosFilas[j].getNota();
+                }
+
+                if (clausula) {
+
+                    DatosFila temporal = datos.datosFilas[i];
+                    datos.datosFilas[i] = datos.datosFilas[j];
+                    datos.datosFilas[j] = temporal;
+                }
+
+                actualizarPanel();
+
+            }
+        }
+
+        return true;
+    }
+
+    private boolean insercion(int tipo) {
+
+        if (tipo == 0) {
+            for (int j = 1; j < datos.datosFilas.length; j++) {
+
+                DatosFila actual = datos.datosFilas[j];
+                int i = j - 1;
+
+                while ((i > -1) && (datos.datosFilas[i].getNota() > actual.getNota())) {
+                    datos.datosFilas[i + 1] = datos.datosFilas[i];
+                    i--;
+
+                }
+                datos.datosFilas[i + 1] = actual;
+                actualizarPanel();
+
+            }
+        } else {
+            for (int j = 1; j < datos.datosFilas.length; j++) {
+
+                DatosFila actual = datos.datosFilas[j];
+                int i = j - 1;
+
+                while ((i > -1) && (datos.datosFilas[i].getNota() < actual.getNota())) {
+                    datos.datosFilas[i + 1] = datos.datosFilas[i];
+                    i--;
+
+                }
+                datos.datosFilas[i + 1] = actual;
+                actualizarPanel();
+
+            }
+        }
+
         return true;
     }
 

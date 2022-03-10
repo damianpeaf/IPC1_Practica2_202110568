@@ -42,7 +42,7 @@ public class Simulacion extends javax.swing.JFrame {
 
         cronometro = new Cronometro(labelTiempo);
         ordenamiento.empezarSimulacion(panelContenedorGrafica, labelPasos);
-
+        //SwingUtilities.invokeLater(ordenamiento);
     }
 
     /**

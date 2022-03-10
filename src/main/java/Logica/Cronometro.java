@@ -16,7 +16,7 @@ public class Cronometro implements Runnable {
 
     private Thread tCronometro;
 
-    private static int milisegundos = 0, segundos = 0, minutos = 0;
+    private static int milisegundos, segundos, minutos;
 
     JLabel label;
 
@@ -24,12 +24,14 @@ public class Cronometro implements Runnable {
         label = lbl;
         tCronometro = new Thread(this);
         tCronometro.start();
+        milisegundos = 0;
+        segundos = 0;
+        minutos = 0;
     }
 
     private String formatearTiempo() {
         String fecha = "";
         milisegundos+=2;
-        System.out.println(milisegundos+"");
         if (milisegundos > 999) {
             milisegundos = 0;
             segundos++;
@@ -44,11 +46,15 @@ public class Cronometro implements Runnable {
 
         return fecha;
     }
+    
+    public void detener(){
+        tCronometro.interrupt();
+    }
 
     @Override
     public void run() {
         try {
-            while (true) {
+            while (!tCronometro.isInterrupted()){
                 label.setText(formatearTiempo());
                 Thread.sleep(1);
             }

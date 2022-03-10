@@ -5,6 +5,7 @@
 package Vista;
 
 import Logica.DatosGrafica;
+import Logica.Ordenamiento;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.io.BufferedReader;
@@ -368,9 +369,10 @@ public class Practica2 extends javax.swing.JFrame {
     private void btnEjecutarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEjecutarActionPerformed
         // TODO add your handling code here:
         if (datosGrafica!=null) {
-            int [] opcionSimulacion = {comboBoxAlgoritmo.getSelectedIndex(), comboBoxTipo.getSelectedIndex(), comboBoxVelocidad.getSelectedIndex()};
             
-            Simulacion frame = new Simulacion(datosGrafica,opcionSimulacion);
+            Ordenamiento ord = new Ordenamiento(datosGrafica,comboBoxAlgoritmo.getSelectedIndex(), comboBoxTipo.getSelectedIndex(), comboBoxVelocidad.getSelectedIndex(),titulo);
+            
+            Simulacion frame = new Simulacion(ord);
             frame.setVisible(true);
         }
     }//GEN-LAST:event_btnEjecutarActionPerformed

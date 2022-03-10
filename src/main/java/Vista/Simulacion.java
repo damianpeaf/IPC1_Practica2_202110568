@@ -6,6 +6,7 @@ package Vista;
 
 import Logica.Cronometro;
 import Logica.DatosGrafica;
+import Logica.Ordenamiento;
 import javax.swing.SwingUtilities;
 
 /**
@@ -22,56 +23,25 @@ public class Simulacion extends javax.swing.JFrame {
     private int[] opcionesSimulacion;
     private int duracion;
     private static int tiempoEnMilisegundos = 0;
+    private Ordenamiento ordenamiento;
+    public static Cronometro cronometro;
 
-    private void empezarSimulacion() {
-        empezarCronometro();
-
-        //paso
-        //actualizar
-    }
-
-    private void empezarCronometro() {
-        //contar
-    }
-
-    public Simulacion(DatosGrafica dg, int[] os) {
-        datosGrafica = dg;
-        opcionesSimulacion = os;
+    public Simulacion(Ordenamiento ord) {
 
         initComponents();
 
+        ordenamiento = ord;
+
         //Informacion de la ejecucion
-        if (opcionesSimulacion[0] == 0) {
-            labelAlgoritmo.setText("Burbuja");
-
-        } else if (opcionesSimulacion[0] == 1) {
-            labelAlgoritmo.setText("Seleccion");
-        } else if (opcionesSimulacion[0] == 2) {
-            labelAlgoritmo.setText("Insercion");
-        }
-
-        if (opcionesSimulacion[1] == 0) {
-            labelTipo.setText("Ascedente");
-        } else if (opcionesSimulacion[1] == 1) {
-            labelTipo.setText("Descentende");
-        }
-
-        if (opcionesSimulacion[2] == 0) {
-            labelVelocidad.setText("Rapida");
-            duracion = 100;
-        } else if (opcionesSimulacion[2] == 1) {
-            labelVelocidad.setText("Media");
-            duracion = 700;
-        } else if (opcionesSimulacion[2] == 2) {
-            labelVelocidad.setText("Lenta");
-            duracion = 1500;
-        }
+        labelAlgoritmo.setText(ordenamiento.info.algoritmo);
+        labelTipo.setText(ordenamiento.info.tipo);
+        labelVelocidad.setText(ordenamiento.info.velocidad);
 
         labelPasos.setText(pasos + "");
         labelTiempo.setText("00:00:00");
 
-        Cronometro cronometro = new Cronometro(labelTiempo);
-       
+        cronometro = new Cronometro(labelTiempo);
+        ordenamiento.empezarSimulacion(panelContenedorGrafica, labelPasos);
 
     }
 
@@ -98,7 +68,7 @@ public class Simulacion extends javax.swing.JFrame {
         labelTiempo = new javax.swing.JLabel();
         labelPasos = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
-        jPanel1 = new javax.swing.JPanel();
+        panelContenedorGrafica = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setResizable(false);
@@ -146,15 +116,16 @@ public class Simulacion extends javax.swing.JFrame {
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addGap(32, 32, 32)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel3)
-                    .addComponent(labelAlgoritmo)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLabel8)
+                        .addComponent(labelVelocidad))
                     .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(jLabel6)
-                        .addComponent(labelTipo)
-                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel8)
-                            .addComponent(labelVelocidad))))
+                        .addComponent(labelTipo))
+                    .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLabel3)
+                        .addComponent(labelAlgoritmo)))
                 .addContainerGap(35, Short.MAX_VALUE))
         );
 
@@ -207,16 +178,16 @@ public class Simulacion extends javax.swing.JFrame {
         jLabel2.setFont(new java.awt.Font("Comfortaa", 1, 14)); // NOI18N
         jLabel2.setText("Ejecución");
 
-        jPanel1.setBackground(new java.awt.Color(204, 204, 204));
+        panelContenedorGrafica.setBackground(new java.awt.Color(204, 204, 204));
 
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        javax.swing.GroupLayout panelContenedorGraficaLayout = new javax.swing.GroupLayout(panelContenedorGrafica);
+        panelContenedorGrafica.setLayout(panelContenedorGraficaLayout);
+        panelContenedorGraficaLayout.setHorizontalGroup(
+            panelContenedorGraficaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 0, Short.MAX_VALUE)
         );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        panelContenedorGraficaLayout.setVerticalGroup(
+            panelContenedorGraficaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 378, Short.MAX_VALUE)
         );
 
@@ -228,7 +199,7 @@ public class Simulacion extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                         .addContainerGap()
-                        .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addComponent(panelContenedorGrafica, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
@@ -261,7 +232,7 @@ public class Simulacion extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(18, 18, 18)
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(panelContenedorGrafica, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(18, Short.MAX_VALUE))
         );
 
@@ -280,7 +251,6 @@ public class Simulacion extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
-    private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JLabel labelAlgoritmo;
@@ -288,5 +258,6 @@ public class Simulacion extends javax.swing.JFrame {
     private javax.swing.JLabel labelTiempo;
     private javax.swing.JLabel labelTipo;
     private javax.swing.JLabel labelVelocidad;
+    private javax.swing.JPanel panelContenedorGrafica;
     // End of variables declaration//GEN-END:variables
 }

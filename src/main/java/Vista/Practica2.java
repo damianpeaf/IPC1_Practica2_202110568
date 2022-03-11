@@ -21,6 +21,7 @@ import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
+import org.jfree.chart.ChartUtils;
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.data.category.DefaultCategoryDataset;
@@ -32,18 +33,20 @@ import org.jfree.data.category.DefaultCategoryDataset;
 public class Practica2 extends javax.swing.JFrame {
 
     private File archivo = null;
-    private static String titulo = null;
+    private String titulo = null;
 
     private String datos = "";
-    
+    private JFreeChart graficaBarrasInicial;
+
     public static DatosGrafica datosGrafica = null;
+    public static DatosGrafica datosGraficaInicial = null;
 
     /**
      * Creates new form Practica2
      */
     public Practica2() {
         initComponents();
-        FileNameExtensionFilter filtro = new FileNameExtensionFilter("*.CSV","csv");
+        FileNameExtensionFilter filtro = new FileNameExtensionFilter("*.CSV", "csv");
         exploradorArchivos.setFileFilter(filtro);
 
     }
@@ -319,9 +322,9 @@ public class Practica2 extends javax.swing.JFrame {
 
     private void btnCargarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCargarActionPerformed
         //Resetear la informacion
-        datos ="";
-        datosGrafica=null;
-        
+        datos = "";
+        datosGrafica = null;
+
         if (archivo != null) {
             try {
                 BufferedReader bfr = new BufferedReader(new FileReader(archivo));
@@ -335,6 +338,7 @@ public class Practica2 extends javax.swing.JFrame {
 
                 if (!datos.equals("")) {
                     datosGrafica = new DatosGrafica(datos, comboBoxTipo.getSelectedIndex());
+                    datosGraficaInicial = new DatosGrafica(datos, comboBoxTipo.getSelectedIndex());
                 }
 
             } catch (FileNotFoundException ex) {
@@ -349,12 +353,13 @@ public class Practica2 extends javax.swing.JFrame {
 
         if (titulo != null && datosGrafica != null) {
 
-            JFreeChart graficoBarras = ChartFactory.createBarChart(titulo, datosGrafica.tituloBarras,datosGrafica.tituloNumeracion, DatosGrafica.crearDataSet(datosGrafica), PlotOrientation.VERTICAL, true, true, false);
+            JFreeChart graficoBarras = ChartFactory.createBarChart(titulo, datosGrafica.tituloBarras, datosGrafica.tituloNumeracion, DatosGrafica.crearDataSet(datosGrafica), PlotOrientation.VERTICAL, true, true, false);
             ChartPanel panelGrafica = new ChartPanel(graficoBarras);
 
-            panelGrafica.setPreferredSize(new Dimension(380,334));
-            
-            
+            graficaBarrasInicial = graficoBarras;
+
+            panelGrafica.setPreferredSize(new Dimension(380, 334));
+
             panelContenedorGrafica.setLayout(new BorderLayout());
             panelContenedorGrafica.add(panelGrafica, BorderLayout.CENTER);
             panelContenedorGrafica.validate();
@@ -369,13 +374,22 @@ public class Practica2 extends javax.swing.JFrame {
     private void btnEjecutarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEjecutarActionPerformed
         // TODO add your handling code here:
         btnCargar.doClick();
-        
-        if (datosGrafica!=null) {
-            
-            Ordenamiento ord = new Ordenamiento(datosGrafica,comboBoxAlgoritmo.getSelectedIndex(), comboBoxTipo.getSelectedIndex(), comboBoxVelocidad.getSelectedIndex(),titulo);
-            
+
+        if (datosGrafica != null) {
+
+            Ordenamiento ord = new Ordenamiento(datosGrafica, comboBoxAlgoritmo.getSelectedIndex(), comboBoxTipo.getSelectedIndex(), comboBoxVelocidad.getSelectedIndex(), titulo);
+
             Simulacion frame = new Simulacion(ord);
             frame.setVisible(true);
+
+            String nombreArchivo = (titulo.equals("")) ? "Grafica" : titulo;
+
+            File imagenGrafica = new File("E:\\NetBeansProjects\\Practica2\\imagenesGeneradas\\" + nombreArchivo + "Inicial.png");
+            try {
+                ChartUtils.saveChartAsJPEG(imagenGrafica, graficaBarrasInicial, 600, 600);
+            } catch (IOException ex) {
+            }
+
         }
     }//GEN-LAST:event_btnEjecutarActionPerformed
 

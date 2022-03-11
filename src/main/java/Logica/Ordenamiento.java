@@ -8,6 +8,8 @@ import static Vista.Practica2.datosGrafica;
 import Vista.Simulacion;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.io.File;
+import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JLabel;
@@ -15,6 +17,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
+import org.jfree.chart.ChartUtils;
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.plot.PlotOrientation;
 
@@ -24,13 +27,25 @@ import org.jfree.chart.plot.PlotOrientation;
  */
 public class Ordenamiento implements Runnable {
 
+    //Informacion del csv
     public DatosGrafica datos;
-    public int tipo, velocidad, algoritmo;
-    private Thread tOrdenamiento;
-    public String tituloGrafica;
-    public InformacionOrdenamiento info;
-    public int pasos = 0;
 
+    //Informacion de la simulacion
+    public InformacionOrdenamiento info;
+    public int tipo, velocidad, algoritmo;
+    public String tituloGrafica;
+    public int pasos = 0;
+    //tiempo
+    int minutos, segundos, milisegundos;
+
+    //Thread del ordenamiento
+    private Thread tOrdenamiento;
+
+    //Archivo de imagen
+    public File imagenGrafica;
+    JFreeChart graficaBarrasFinal;
+
+    //Elementos graficos de la simulacion
     public JPanel panelContenedorGrafica;
     public JLabel labelPasos;
 
@@ -38,7 +53,7 @@ public class Ordenamiento implements Runnable {
         this.datos = datos;
         this.tipo = tipo;
         this.algoritmo = algoritmo;
-        this.tituloGrafica = titulo;
+        this.tituloGrafica = (titulo.equals("")) ? "Grafica" : titulo;
 
         info = new InformacionOrdenamiento(algoritmo, velocidad, tipo);
 
@@ -76,8 +91,24 @@ public class Ordenamiento implements Runnable {
             detener();
         }
 
+        generarImagen();
+
+        milisegundos = Cronometro.milisegundos;
+        segundos = Cronometro.segundos;
+        minutos = Cronometro.minutos;
+        
+        Reporte reporte = new Reporte(this);
+
         JOptionPane.showMessageDialog(null, "Ordenamiento finalizado, generando reporte...");
 
+    }
+
+    private void generarImagen() {
+        imagenGrafica = new File("E:\\NetBeansProjects\\Practica2\\imagenesGeneradas\\" + tituloGrafica + "Final.png");
+        try {
+            ChartUtils.saveChartAsJPEG(imagenGrafica, graficaBarrasFinal, 600, 600);
+        } catch (IOException ex) {
+        }
     }
 
     private void detener() {
@@ -85,6 +116,8 @@ public class Ordenamiento implements Runnable {
         JFreeChart graficoBarras = ChartFactory.createBarChart(tituloGrafica, datosGrafica.tituloBarras, datosGrafica.tituloNumeracion, DatosGrafica.crearDataSet(datosGrafica), PlotOrientation.VERTICAL, true, true, false);
         ChartPanel panelGrafica = new ChartPanel(graficoBarras);
         panelGrafica.setPreferredSize(new Dimension(panelContenedorGrafica.getWidth(), panelContenedorGrafica.getHeight()));
+
+        graficaBarrasFinal = graficoBarras;
 
         panelContenedorGrafica.setLayout(new BorderLayout());
         panelContenedorGrafica.add(panelGrafica, BorderLayout.CENTER);

@@ -16,7 +16,7 @@ public class Cronometro implements Runnable {
 
     private Thread tCronometro;
 
-    private static int milisegundos, segundos, minutos;
+    public static int milisegundos, segundos, minutos;
 
     JLabel label;
 

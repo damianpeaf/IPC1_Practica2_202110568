@@ -13,4 +13,5 @@ Compilado con java 17.0.1 2021-10-19 LTS
 
 ## Ejecución
 - Doble click en archivo .jar
-- Archivo .csv de preuba incluido en la carpeta raiz
+- Archivo .csv de prueba incluido en la carpeta raiz
+NOTA: Es posible que la generación de reportes no funcione de forma correcta por la utlización de rutas absolutas.

@@ -5,6 +5,7 @@
 package Logica;
 
 import Vista.Practica2;
+import java.awt.Desktop;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
@@ -51,6 +52,8 @@ public class Reporte {
             BufferedWriter bw = new BufferedWriter(fw);
             bw.write(reporte);
             bw.close();
+            
+            Desktop.getDesktop().open(file);
 
 
         } catch (Exception e) {

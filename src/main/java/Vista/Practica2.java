@@ -13,10 +13,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JFileChooser;
-import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import org.jfree.chart.ChartFactory;
@@ -24,7 +21,6 @@ import org.jfree.chart.ChartPanel;
 import org.jfree.chart.ChartUtils;
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.plot.PlotOrientation;
-import org.jfree.data.category.DefaultCategoryDataset;
 
 /**
  *
@@ -340,6 +336,8 @@ public class Practica2 extends javax.swing.JFrame {
                     datosGrafica = new DatosGrafica(datos, comboBoxTipo.getSelectedIndex());
                     datosGraficaInicial = new DatosGrafica(datos, comboBoxTipo.getSelectedIndex());
                 }
+                
+                bfr.close();
 
             } catch (FileNotFoundException ex) {
             } catch (IOException ex) {

@@ -19,10 +19,6 @@ public class Simulacion extends javax.swing.JFrame {
      * Creates new form Simulacion
      */
     private int pasos = 0;
-    private DatosGrafica datosGrafica;
-    private int[] opcionesSimulacion;
-    private int duracion;
-    private static int tiempoEnMilisegundos = 0;
     private Ordenamiento ordenamiento;
     public static Cronometro cronometro;
 
@@ -42,7 +38,6 @@ public class Simulacion extends javax.swing.JFrame {
 
         cronometro = new Cronometro(labelTiempo);
         ordenamiento.empezarSimulacion(panelContenedorGrafica, labelPasos);
-        //SwingUtilities.invokeLater(ordenamiento);
     }
 
     /**

@@ -32,13 +32,13 @@ public class InformacionOrdenamiento {
 
         if (velocidad == 0) {
             this.velocidad ="Rapida";
-            duracion = 100;
+            duracion = 500;
         } else if (velocidad == 1) {
             this.velocidad = "Media";
-            duracion = 700;
+            duracion = 1000;
         } else if (velocidad == 2) {
             this.velocidad= "Lenta";
-            duracion = 1500;
+            duracion = 1700;
         }
     }
    

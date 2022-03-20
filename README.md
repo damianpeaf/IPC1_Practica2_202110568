@@ -9,7 +9,7 @@ Compilado con java 17.0.1 2021-10-19 LTS
 
 1. Archivo .jar [aqui](https://github.com/damianpeaf/IPC1_Practica2_202110568/blob/main/target/Practica2-1.0-SNAPSHOT-jar-with-dependencies.jar)
 2. Codigo fuente [aquí](https://github.com/damianpeaf/IPC1_Practica2_202110568/tree/main/src/main/java)
-3. Manuales [aquí]()
+3. Manuales [aquí](https://github.com/damianpeaf/IPC1_Practica2_202110568/Manuales)
 
 ## Ejecución
 - Doble click en archivo .jar

@@ -31,7 +31,9 @@ public class Cronometro implements Runnable {
 
     private String formatearTiempo() {
         String fecha = "";
-        milisegundos+=2;
+        String mil, min, sec;
+
+        milisegundos += 2;
         if (milisegundos > 999) {
             milisegundos = 0;
             segundos++;
@@ -42,19 +44,41 @@ public class Cronometro implements Runnable {
             minutos++;
         }
 
-        fecha = minutos + ":" + segundos + ":" + milisegundos;
+        if (milisegundos <= 9) {
+            mil = "000" + milisegundos;
+        } else if (milisegundos <= 99) {
+            mil = "00" + milisegundos;
+        } else if (milisegundos <= 999) {
+            mil = "0" + milisegundos;
+        }else{
+            mil = ""+milisegundos;
+        }
+        
+        if (segundos <= 9) {
+            sec = "0" + segundos;
+        }else{
+            sec = ""+ segundos;
+        }
+        
+        if (minutos <= 9) {
+            min = "0" + minutos;
+        }else{
+            min = ""+ minutos;
+        }
+
+        fecha = min + ":" + sec + ":" + mil;
 
         return fecha;
     }
-    
-    public void detener(){
+
+    public void detener() {
         tCronometro.interrupt();
     }
 
     @Override
     public void run() {
         try {
-            while (!tCronometro.isInterrupted()){
+            while (!tCronometro.isInterrupted()) {
                 label.setText(formatearTiempo());
                 Thread.sleep(1);
             }

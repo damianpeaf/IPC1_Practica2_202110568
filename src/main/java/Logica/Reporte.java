@@ -52,9 +52,8 @@ public class Reporte {
             BufferedWriter bw = new BufferedWriter(fw);
             bw.write(reporte);
             bw.close();
-            
-            Desktop.getDesktop().open(file);
 
+            Desktop.getDesktop().open(file);
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -93,6 +92,33 @@ public class Reporte {
     }
 
     private String generarDetalles() {
+
+        String mil, min, sec;
+        int minutos = ordenamiento.minutos;
+        int segundos = ordenamiento.segundos;
+        int milisegundos = ordenamiento.milisegundos;
+        if (milisegundos <= 9) {
+            mil = "000" + milisegundos;
+        } else if (milisegundos <= 99) {
+            mil = "00" + milisegundos;
+        } else if (milisegundos <= 999) {
+            mil = "0" + milisegundos;
+        } else {
+            mil = "" + milisegundos;
+        }
+
+        if (segundos <= 9) {
+            sec = "0" + segundos;
+        } else {
+            sec = "" + segundos;
+        }
+
+        if (minutos <= 9) {
+            min = "0" + minutos;
+        } else {
+            min = "" + minutos;
+        }
+
         return "    <div class=\"dobleColumna\">\n"
                 + "        <div>\n"
                 + "            <h2>Detalle Ordenamiento</h2>\n"
@@ -102,7 +128,7 @@ public class Reporte {
                 + "        </div>\n"
                 + "        <div>\n"
                 + "            <h2>Detalle de ejecucion</h2>\n"
-                + "            <p><span class=\"resaltar\">Tiempo: </span> " + ordenamiento.minutos + ":" + ordenamiento.segundos + ":" + ordenamiento.milisegundos + "</p>\n"
+                + "            <p><span class=\"resaltar\">Tiempo: </span> " + min + ":" + sec + ":" + mil + "</p>\n"
                 + "            <p><span class=\"resaltar\">Pasos: </span> " + ordenamiento.pasos + "</p>\n"
                 + "        </div>\n"
                 + "    </div>";
